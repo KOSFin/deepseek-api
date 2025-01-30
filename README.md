@@ -1,154 +1,138 @@
 # DeepSeek4Free
 
-A Python package for interacting with the DeepSeek AI chat API. This package provides a clean interface to interact with DeepSeek's chat model, with support for streaming responses, thinking process visibility, and web search capabilities.
+Пакет Python для взаимодействия с API чата DeepSeek AI. Этот пакет предоставляет чистый интерфейс для взаимодействия с моделью чата DeepSeek, с поддержкой потоковых ответов, видимости процесса размышлений и возможности поиска в интернете.
 
-### Learn how to reverse engineer private api's !!
-- and reverse wasm like it was required here
-- [whop.com/reverser-academy](https://whop.com/reverser-academy/) (beta)
-
-
-> ⚠️ **Service Notice**: DeepSeek API is currently experiencing high load. Work is in progress to integrate additional API providers. Please expect intermittent errors.
+### Узнай, как взламывать частные API !!
+- и взламывать wasm, как это требовалось здесь
+- [whop.com/reverser-academy](https://whop.com/reverser-academy/) (бета)
 
 
-## ✨ Features
+> ⚠️ **Уведомление об услугах**: API DeepSeek в настоящее время испытывает большую нагрузку. Ведется работа по интеграции дополнительных поставщиков API. Ожидайте периодические ошибки.
 
-- 🔄 **Streaming Responses**: Real-time interaction with token-by-token output
-- 🤔 **Thinking Process**: Optional visibility into the model's reasoning steps
-- 🔍 **Web Search**: Optional integration for up-to-date information
-- 💬 **Session Management**: Persistent chat sessions with conversation history
-- ⚡ **Efficient PoW**: WebAssembly-based proof of work implementation
-- 🛡️ **Error Handling**: Comprehensive error handling with specific exceptions
-- ⏱️ **No Timeouts**: Designed for long-running conversations without timeouts
-- 🧵 **Thread Support**: Parent message tracking for threaded conversations
 
-## 📦 Installation
+## ✨ Возможности
 
-1. Clone the repository:
+- 🔄 **Потоковые ответы**: Взаимодействие в реальном времени с выводом по токенам
+- 🤔 **Процесс размышлений**: Опциональная видимость шагов рассуждений модели
+- 🔍 **Поиск в интернете**: Опциональная интеграция для актуальной информации
+- 💬 **Управление сессиями**: Постоянные чат-сессии с историей разговоров
+- ⚡ **Эффективный PoW**: Реализация доказательства работы на основе WebAssembly
+- 🛡️ **Обработка ошибок**: Всесторонняя обработка ошибок с конкретными исключениями
+- ⏱️ **Без тайм-аутов**: Разработано для долгих разговоров без тайм-аутов
+- 🧵 **Поддержка потоков**: Отслеживание родительских сообщений для разговоров с потоками
+
+## 📦 Установка
+
+1. Клонируйте репозиторий:
 ```bash
 git clone https://github.com/yourusername/deepseek4free.git
 cd deepseek4free
 ```
-
-2. Install dependencies:
+Установите зависимости:
 ```bash
 pip install -r requirements.txt
 ```
+## 🔑 Аутентификация
+Для использования этого пакета вам нужен токен авторизации DeepSeek. Вот как его получить:
 
-## 🔑 Authentication
-
-To use this package, you need a DeepSeek auth token. Here's how to obtain it:
-
-### Method 1: From LocalStorage (Recommended)
-
+### Метод 1: Из LocalStorage (Рекомендуется)
 <img width="1150" alt="image" src="https://github.com/user-attachments/assets/b4e11650-3d1b-4638-956a-c67889a9f37e" />
 
-1. Visit [chat.deepseek.com](https://chat.deepseek.com)
-2. Log in to your account
-3. Open browser developer tools (F12 or right-click > Inspect)
-4. Go to Application tab (if not visible, click >> to see more tabs)
-5. In the left sidebar, expand "Local Storage"
-6. Click on "https://chat.deepseek.com"
-7. Find the key named `userToken`
-8. Copy `"value"` - this is your authentication token
+1. Перейдите на сайт chat.deepseek.com
+2. Войдите в свою учетную запись
+3. Откройте инструменты разработчика в браузере (F12 или щелкните правой кнопкой мыши > Исследовать)
+4. Перейдите на вкладку "Приложение" (если она не видна, щелкните >> для отображения дополнительных вкладок)
+5. В левой панели разверните "Local Storage"
+6. Нажмите на "https://chat.deepseek.com"
+7. Найдите ключ с именем userToken
+8. Скопируйте значение "value" — это ваш токен аутентификации
 
-### Method 2: From Network Tab
+### Метод 2: Из вкладки Сеть
+Также вы можете получить токен из сетевых запросов:
 
-Alternatively, you can get the token from network requests:
+1. Перейдите на сайт chat.deepseek.com
+2. Войдите в свою учетную запись
+3. Откройте инструменты разработчика в браузере (F12)
+4. Перейдите на вкладку "Сеть"
+5. Сделайте любой запрос в чате
+6. Найдите заголовки запроса
+7. Скопируйте токен authorization (без префикса 'Bearer ')
 
-1. Visit [chat.deepseek.com](https://chat.deepseek.com)
-2. Log in to your account
-3. Open browser developer tools (F12)
-4. Go to Network tab
-5. Make any request in the chat
-6. Find the request headers
-7. Copy the `authorization` token (without 'Bearer ' prefix)
-
-## 📚 Usage
-
-### Basic Example
-
+## 📚 Использование
+Простой пример
 ```python
 from dsk.api import DeepSeekAPI
 
-# Initialize with your auth token
-api = DeepSeekAPI("YOUR_AUTH_TOKEN")
+# Инициализация с вашим токеном авторизации
+api = DeepSeekAPI("ВАШ_ТОКЕН_АУТЕНТИФИКАЦИИ")
 
-# Create a new chat session
+# Создание новой чат-сессии
 chat_id = api.create_chat_session()
 
-# Simple chat completion
-prompt = "What is Python?"
+# Простой чат-комплешн
+prompt = "Что такое Python?"
 for chunk in api.chat_completion(chat_id, prompt):
     if chunk['type'] == 'text':
         print(chunk['content'], end='', flush=True)
 ```
-
-### Advanced Features
-
-#### Thinking Process Visibility
-
-The thinking process shows the model's reasoning steps:
+Расширенные возможности
+- Видимость процесса размышлений
+- Процесс размышлений показывает шаги рассуждений модели:
 
 ```python
-# With thinking process enabled
+# С включенным процессом размышлений
 for chunk in api.chat_completion(
     chat_id,
-    "Explain quantum computing",
+    "Объясните квантовые вычисления",
     thinking_enabled=True
 ):
     if chunk['type'] == 'thinking':
-        print(f"🤔 Thinking: {chunk['content']}")
+        print(f"🤔 Размышление: {chunk['content']}")
     elif chunk['type'] == 'text':
         print(chunk['content'], end='', flush=True)
 ```
-
-#### Web Search Integration
-
-Enable web search for up-to-date information:
+- Интеграция поиска в интернете
+- - Включите поиск в интернете для получения актуальной информации:
 
 ```python
-# With web search enabled
+# С включенным поиском в интернете
 for chunk in api.chat_completion(
     chat_id,
-    "What are the latest developments in AI?",
+    "Какие последние разработки в области ИИ?",
     thinking_enabled=True,
     search_enabled=True
 ):
     if chunk['type'] == 'thinking':
-        print(f"🔍 Searching: {chunk['content']}")
+        print(f"🔍 Поиск: {chunk['content']}")
     elif chunk['type'] == 'text':
         print(chunk['content'], end='', flush=True)
 ```
-
-#### Threaded Conversations
-
-Create threaded conversations by tracking parent messages:
+- Поточные разговоры
+- - Создайте потоковые разговоры, отслеживая родительские сообщения:
 
 ```python
-# Start a conversation
+# Начинаем разговор
 chat_id = api.create_chat_session()
 
-# Send initial message
+# Отправляем первоначальное сообщение
 parent_id = None
-for chunk in api.chat_completion(chat_id, "Tell me about neural networks"):
+for chunk in api.chat_completion(chat_id, "Расскажите о нейронных сетях"):
     if chunk['type'] == 'text':
         print(chunk['content'], end='', flush=True)
     elif 'message_id' in chunk:
         parent_id = chunk['message_id']
 
-# Send follow-up question in the thread
+# Отправляем следующий вопрос в потоке
 for chunk in api.chat_completion(
     chat_id,
-    "How do they compare to other ML models?",
+    "Как они сравниваются с другими моделями ML?",
     parent_message_id=parent_id
 ):
     if chunk['type'] == 'text':
         print(chunk['content'], end='', flush=True)
 ```
-
-### Error Handling
-
-The package provides specific exceptions for different error scenarios:
+- Обработка ошибок
+- - Пакет предоставляет специфические исключения для различных ошибок:
 
 ```python
 from dsk.api import (
@@ -160,30 +144,27 @@ from dsk.api import (
 )
 
 try:
-    api = DeepSeekAPI("YOUR_AUTH_TOKEN")
+    api = DeepSeekAPI("ВАШ_ТОКЕН_АУТЕНТИФИКАЦИИ")
     chat_id = api.create_chat_session()
     
-    for chunk in api.chat_completion(chat_id, "Your prompt here"):
+    for chunk in api.chat_completion(chat_id, "Ваш запрос здесь"):
         if chunk['type'] == 'text':
             print(chunk['content'], end='', flush=True)
             
 except AuthenticationError:
-    print("Authentication failed. Please check your token.")
+    print("Ошибка аутентификации. Пожалуйста, проверьте ваш токен.")
 except RateLimitError:
-    print("Rate limit exceeded. Please wait before making more requests.")
+    print("Превышен лимит запросов. Пожалуйста, подождите перед отправкой новых запросов.")
 except NetworkError:
-    print("Network error occurred. Check your internet connection.")
+    print("Ошибка сети. Проверьте ваше интернет-соединение.")
 except APIError as e:
-    print(f"API error occurred: {str(e)}")
+    print(f"Ошибка API: {str(e)}")
+Вспомогательные функции
 ```
-
-### Helper Functions
-
-For cleaner output handling, you can use helper functions like in `example.py`:
-
+- Для более чистой обработки вывода, вы можете использовать вспомогательные функции, как в example.py:
 ```python
 def print_response(chunks):
-    """Helper function to print response chunks in a clean format"""
+    """Вспомогательная функция для вывода ответов в чистом формате"""
     thinking_lines = []
     text_content = []
     
@@ -196,39 +177,34 @@ def print_response(chunks):
             text_content.append(chunk['content'])
             print(chunk['content'], end='', flush=True)
 ```
-
-## 🧪 Response Format
-
-The API returns chunks in the following format:
+### 🧪 Формат ответа
+API возвращает чанки в следующем формате:
 
 ```python
 {
-    'type': str,        # 'thinking' or 'text'
-    'content': str,     # The actual content
-    'finish_reason': str,  # 'stop' when response is complete
-    'message_id': str   # (optional) For threaded conversations
+    'type': str,        # 'thinking' или 'text'
+    'content': str,     # Содержимое ответа
+    'finish_reason': str,  # 'stop', когда ответ завершен
+    'message_id': str   # (опционально) Для потоковых разговоров
 }
 ```
+### 🤝 Вклад
+Вклады приветствуются! Пожалуйста, не стесняйтесь отправить Pull Request. Вот несколько способов, как вы можете внести вклад:
 
-## 🤝 Contributing
+- 🐛 Сообщать об ошибках
+- ✨ Запрашивать новые функции
+- 📝 Улучшать документацию
+- 🔧 Предлагать исправления ошибок
+- 🎨 Добавлять примеры
+- 📄 Лицензия
+Этот проект лицензирован по лицензии MIT - см. файл LICENSE для подробностей.
 
-Contributions are welcome! Please feel free to submit a Pull Request. Here are some ways you can contribute:
+## ⚠️ Отказ от ответственности
+Этот пакет не является официальным и не связан с DeepSeek. Используйте его ответственно и в соответствии с условиями обслуживания DeepSeek.
 
-- 🐛 Report bugs
-- ✨ Request features
-- 📝 Improve documentation
-- 🔧 Submit bug fixes
-- 🎨 Add examples
+## Ссылки
+- Проект создан пользователем [xtekky]([https://chat.deepseek.com](https://github.com/xtekky)
+- Репозиторий переведён на русский язык пользователем [PARAPOPOVICH](https://github.com/KOSFin)
 
-## 📄 License
+- Видео-гайд на YouTube: (скоро появится)
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This package is unofficial and not affiliated with DeepSeek. Use it responsibly and in accordance with DeepSeek's terms of service.
-
-## 🔗 Related Projects
-
-- [DeepSeek Chat](https://chat.deepseek.com) - Official DeepSeek chat interface
-- [Example Projects](example.py) - More usage examples
